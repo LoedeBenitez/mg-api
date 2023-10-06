@@ -20,9 +20,13 @@ use Illuminate\Support\Facades\Route;
 // });
 Route::post('user/register', [AuthController::class, 'register']);
 Route::post('user/login', [AuthController::class, 'login']);
+Route::get('user/private', [UserController::class, 'private']);
+
+Route::get('user/list', [UserController::class, 'list']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('user/list', [UserController::class, 'list']);
+    Route::get('user/check/auth', [UserController::class, 'checkAuth']);
+    // Route::get('user/list', [UserController::class, 'list']);
     Route::get('user/{id}', [UserController::class, 'userGetById']);
     Route::post('user/logout', [AuthController::class, 'logout']);
 });

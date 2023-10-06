@@ -1,7 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\auth\AuthController;
+use App\Http\Controllers\navigate\navigation;
+use App\Http\Controllers\user\UserController;
+use App\Livewire\Home\Dashboard;
+use App\Livewire\User\Login;
 
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,10 +18,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::middleware('guest')->group(function () {
+    Route::get('/', [navigation::class, 'index']);
+    Route::get('/login', Login::class)->name('login');
 });
 
-Route::get('/login', function () {
-    return view('welcome');
-})->name('login');
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/home', Dashboard::class)->name('home');
+    Route::get('/private', [UserController::class, 'private']);
+});
